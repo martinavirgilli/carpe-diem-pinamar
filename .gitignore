@@ -1,0 +1,24 @@
+# Links secretos de los calendarios (iCal de Google/Airbnb/Booking).
+# Es una credencial: no va al repositorio. En Netlify van como variables de entorno.
+ical/config.php
+
+# Archivos de indicaciones, solo para trabajar en la computadora
+CLAUDE.md
+LEEME.txt
+LEEME.md
+leeme.txt
+*.instrucciones.txt
+Actualizar calendarios.cmd
+
+# Fotos originales sin optimizar (pesadas): quedan solo en la computadora
+img/originales/
+
+# Carpeta que arma el script de Netlify en cada publicación
+publicar/
+
+# Copia temporal del calendario en el servidor PHP
+ical/cache/
+
+# Sistema
+Thumbs.db
+.DS_Store

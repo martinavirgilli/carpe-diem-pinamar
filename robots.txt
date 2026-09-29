@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /ical/
+
+Sitemap: https://www.carpediempinamar.com.ar/sitemap.xml

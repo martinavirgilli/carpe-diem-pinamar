@@ -1,0 +1,5 @@
+# Solo se puede abrir calendario.php desde afuera; config.php y la caché quedan privados.
+<Files "config.php">
+  Require all denied
+</Files>
+RedirectMatch 403 ^/ical/cache/

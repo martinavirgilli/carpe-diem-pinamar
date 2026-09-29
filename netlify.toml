@@ -1,0 +1,27 @@
+# ==========================================================================
+# Carpe Diem · Pinamar — configuración de Netlify
+# El sitio también funciona en un hosting común con PHP; esto es solo
+# para la versión publicada en Netlify. Ver CLAUDE.md.
+# ==========================================================================
+
+[build]
+  # Arma publicar/ con el sitio, sin los archivos PHP ni los de trabajo
+  command = "node herramientas/preparar-netlify.mjs"
+  publish = "publicar"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# El calendario responde en /ical/calendario.php?id=<departamento>
+# (la ruta la declara la propia función, en netlify/functions/calendario.mjs)
+
+[[headers]]
+  for = "/ical/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
