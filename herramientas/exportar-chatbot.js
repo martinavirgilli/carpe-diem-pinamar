@@ -8,7 +8,7 @@
        node herramientas/exportar-chatbot.js
 
    Por defecto exporta solo los departamentos que ya se alquilan. Los que
-   tienen "Próximamente" en el nombre quedan afuera; para incluirlos:
+   tienen  estado: "proximamente"  quedan afuera; para incluirlos:
        node herramientas/exportar-chatbot.js --todos
    ========================================================================== */
 
@@ -26,7 +26,8 @@ vm.createContext(contexto);
 vm.runInContext(fs.readFileSync(path.join(raiz, "js/datos.js"), "utf8"), contexto);
 const D = contexto.window.CARPE_DIEM;
 
-const esProximamente = (p) => /pr[óo]ximamente/i.test(p.nombre);
+// Un departamento que todavía no se alquila: no tiene datos ni links de reserva.
+const esProximamente = (p) => p.estado === "proximamente" || /pr[óo]ximamente/i.test(p.nombre);
 
 // Palabras con las que un huésped suele pedir un departamento ("el de la parrilla")
 const CLAVES = [
@@ -69,7 +70,7 @@ function resumen(p) {
 }
 
 const departamentos = D.propiedades
-  .filter((p) => incluirTodos || !esProximamente(p))
+  .filter((p) => (incluirTodos || !esProximamente(p)) && p.datos)
   .map((p) => {
     const d = p.datos || {};
     return {
@@ -141,14 +142,27 @@ const salida = {
     tiktok: `https://www.tiktok.com/@${D.contacto.tiktok}`,
     datos_provisorios: !!D.contacto.ejemplo,
   },
+  reglas_de_estadia: {
+    explicacion: "La regla la marca el mes de llegada. Fuera de esas condiciones no se alquila.",
+    por_mes: (D.calendario.reglas || []).map((r) => ({
+      meses: r.meses,
+      dia_de_llegada: r.diaLlegada === undefined ? "cualquiera" : ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"][r.diaLlegada],
+      noches_exactas: r.nochesExactas || null,
+      minimo_noches: r.minimoNoches || null,
+      noches_en_multiplos_de: r.multiploNoches || null,
+      resumen: r.texto,
+    })),
+  },
   guia_de_respuesta: [
     "Responder en español rioplatense, de vos, cordial y breve.",
     "Usar únicamente los datos de este archivo. Si algo no está, decir que se consulta y derivar a una persona.",
     "No hay precios en este archivo: ante una consulta de tarifas, pedir fechas y cantidad de huéspedes y derivar a WhatsApp.",
+    "Revisar siempre 'reglas_de_estadia' antes de ofrecer fechas: de diciembre a marzo se alquila por semanas completas, de sábado a sábado (7, 14, 21… noches). De abril a noviembre no hay restricción.",
+    "Si alguien pide un fin de semana entre diciembre y marzo, explicar que en esos meses se alquila por semana completa y ofrecer el sábado más cercano.",
     "Para saber si unas fechas están libres, consultar el endpoint de 'disponibilidad' del departamento. 'hasta' es el día de salida y esa noche no cuenta como ocupada.",
     "Si el endpoint responde configurado: false o falla, no afirmar disponibilidad: ofrecer confirmar por WhatsApp.",
     "Si un departamento tiene datos_provisorios: true, no confirmar esos detalles como definitivos.",
-    "Para cerrar, compartir el link de la ficha del departamento y el de Airbnb o Booking.",
+    "Para cerrar, compartir el link de la ficha del departamento y el de la plataforma que tenga cargada (hoy, Airbnb). Si una plataforma figura en null, no existe: no inventarla.",
     "No inventar fotos, reseñas, descuentos ni excepciones a las normas de la casa.",
   ],
   departamentos,

@@ -9,6 +9,7 @@
        se servirían como texto y quedarían a la vista los links secretos de
        los calendarios. En Netlify ese trabajo lo hace netlify/functions/calendario.mjs.
      · herramientas/, marca/, chatbot/        → son para trabajar, no para publicar.
+     · img/originales/                        → las fotos pesadas sin optimizar.
 
    También se puede correr a mano para ver qué se va a subir:
        node herramientas/preparar-netlify.mjs
@@ -31,7 +32,10 @@ await mkdir(DESTINO, { recursive: true });
 for (const elemento of COPIAR) {
   const origen = path.join(RAIZ, elemento);
   if (await existe(origen)) {
-    await cp(origen, path.join(DESTINO, elemento), { recursive: true });
+    await cp(origen, path.join(DESTINO, elemento), {
+      recursive: true,
+      filter: (ruta) => !path.relative(RAIZ, ruta).split(path.sep).includes("originales"),
+    });
     console.log("  copiado:", elemento);
   }
 }
@@ -41,7 +45,7 @@ const ical = path.join(RAIZ, "ical");
 if (await existe(ical)) {
   await mkdir(path.join(DESTINO, "ical"), { recursive: true });
   for (const archivo of await readdir(ical)) {
-    if (archivo.startsWith("ocupados-") && archivo.endsWith(".json")) {
+    if (archivo.startsWith("ocupados-") && (archivo.endsWith(".json") || archivo.endsWith(".js"))) {
       await cp(path.join(ical, archivo), path.join(DESTINO, "ical", archivo));
       console.log("  copiado: ical/" + archivo);
     }

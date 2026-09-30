@@ -1,4 +1,5 @@
-{
+window.CARPE_DIEM_OCUPADOS = window.CARPE_DIEM_OCUPADOS || {};
+window.CARPE_DIEM_OCUPADOS["mares-besugo"] = {
   "configurado": true,
   "instantanea": true,
   "fuentes": [
@@ -11,4 +12,4 @@
       "hasta": "2027-01-23"
     }
   ]
-}
+};

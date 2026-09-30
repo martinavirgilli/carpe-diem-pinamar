@@ -24,8 +24,8 @@ window.CARPE_DIEM = {
     whatsapp: "5492254607187",
     mensajeWhatsapp: "¡Hola! Vi la web de Carpe Diem Pinamar y quiero consultar por",
     email: "carpediempinamar@gmail.com",
-    instagram: "carpediem.pinamar",   // solo el usuario, sin @
-    tiktok: "carpediem.pinamar",      // solo el usuario, sin @
+    instagram: "carpediem.alquilerespinamar",   // solo el usuario, sin @
+    tiktok: "carpe.diem.alquil",      // solo el usuario, sin @
   },
 
   // Calendario: los links iCal de Airbnb/Booking se cargan en
@@ -33,6 +33,24 @@ window.CARPE_DIEM = {
   calendario: {
     endpoint: "ical/calendario.php",
     mesesVisibles: 2,
+
+    /* Reglas de estadía, según el MES DE LLEGADA (1 = enero … 12 = diciembre).
+       · diaLlegada: día de la semana obligatorio para entrar (0 = domingo … 6 = sábado).
+       · nochesExactas: las únicas duraciones permitidas.
+       · minimoNoches: cantidad mínima, con cualquier día de llegada.
+       · texto: lo que se muestra debajo del calendario. */
+    reglas: [
+      {
+        meses: [12, 1, 2, 3],
+        diaLlegada: 6,                 // sábado
+        multiploNoches: 7,             // semanas completas: 7, 14, 21, 28…
+        minimoNoches: 7,
+        texto: "De diciembre a marzo se alquila por semanas completas, de sábado a sábado.",
+        avisoLlegada: "De diciembre a marzo la llegada es siempre un sábado.",
+        avisoSalida: "La salida también es un sábado: se alquila por semanas completas.",
+      },
+      // De abril a noviembre no hay restricción: cualquier día y cualquier cantidad de noches.
+    ],
   },
 
   propiedades: [
@@ -56,7 +74,7 @@ window.CARPE_DIEM = {
         camas: "1 matrimonial + 2 individuales",
         banos: 2,
         superficie: 60,
-        piso: "PLanta baja",
+        piso: "Planta baja",
         distanciaPlaya: "10 cuadras",
       },
       distribucion: [
@@ -78,8 +96,8 @@ window.CARPE_DIEM = {
       },
       normas: {
         checkin: "Desde las 16:00",
-        checkout: "Hasta las 11:00",
-        estadiaMinima: "7 noches",
+        checkout: "Hasta las 10:00",
+        estadiaMinima: "De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo)",
         mascotas: "No se admiten",
         fumar: "Prohibido fumar dentro de la unidad",
         fiestas: "No se permiten fiestas ni eventos",
@@ -93,7 +111,7 @@ window.CARPE_DIEM = {
       etiquetasFotos: ["Patio y parrilla", "Living comedor", "Dormitorio en suite", "Dormitorio", "Cocina", "Baño en suite", "Baño", "Frente del edificio"],
       reservas: {
         airbnb: "https://www.airbnb.com.ar/rooms/837759040884961194?guests=1&adults=1&s=67&unique_share_id=2afef204-95a9-43f7-b5fd-b47c9891bb79",
-        booking: "https://www.booking.com/",
+        // booking: "https://www.booking.com/",   // se activa cuando Booking apruebe las publicaciones
       },
     },
 
@@ -104,7 +122,7 @@ window.CARPE_DIEM = {
       zona: "Pinamar Centro",
       direccion: "Del Besugo 1350, Pinamar",
       mapa: null, // faltan las coordenadas del edificio
-      frase: "Tercer piso con balcón y parrilla, entre los pinos.",
+      frase: "Tercer piso con balcón, parrilla y cochera cubierta.",
       descripcion: [
         "Un dos ambientes en un tercer piso, con balcón y parrilla, en una de las zonas más tranquilas ya accesibles de Pinamar. Te despertás con los pájaros y a unas cuadras llegás a una playa ancha y tranquila o al centro de Pinamar.",
         "Es ideal para familias: un dormitorios, dos baños, uno en suite y un toillete, un sofa cama en el living comedor y un balcón con parrilla con vista a los pinos. Con estacionamiento privado en el edificio.",
@@ -135,8 +153,8 @@ window.CARPE_DIEM = {
       },
       normas: {
         checkin: "Desde las 16:00",
-        checkout: "Hasta las 11:00",
-        estadiaMinima: "7 noches",
+        checkout: "Hasta las 10:00",
+        estadiaMinima: "De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo)",
         mascotas: "No se admiten",
         fumar: "Prohibido fumar dentro de la unidad",
         fiestas: "No se permiten fiestas ni eventos",
@@ -149,7 +167,7 @@ window.CARPE_DIEM = {
       etiquetasFotos: ["Balcón y parrilla", "Living comedor", "Dormitorio principal", "Cocina", "Baño", "Entorno de pinos"],
       reservas: {
         airbnb: "https://www.airbnb.com.ar/rooms/1088037256147290223?guests=1&adults=1&s=67&unique_share_id=4638a735-2f1f-4537-8277-9330dffc706a",
-        booking: "https://www.booking.com/",
+        // booking: "https://www.booking.com/",   // se activa cuando Booking apruebe las publicaciones
       },
     },
 
@@ -162,7 +180,7 @@ window.CARPE_DIEM = {
       mapa: { lat: -37.1048344, lng: -56.8620441 },
       frase: "Cerca del centro, con pileta en el edificio.",
       descripcion: [
-        "Un dos ambientes a dos cuadras de la Avenida Bunge, en un edificio con pileta. Tiene la comodidad del centro, con cafés, restaurantes y paseo, y la playa a cinco cuadras.",
+        "Un dos ambientes a minutos a pie de la Avenida Bunge, en un edificio con pileta. Tiene la comodidad del centro, con cafés, restaurantes y paseo, y la playa a diez cuadras.",
         "Es una buena opción también fuera de temporada: tiene calefacción, buena conexión a internet y la tranquilidad de un entorno natural.",
       ],
       datos: {
@@ -189,8 +207,8 @@ window.CARPE_DIEM = {
       },
       normas: {
         checkin: "Desde las 16:00",
-        checkout: "Hasta las 11:00",
-        estadiaMinima: "7 noches",
+        checkout: "Hasta las 10:00",
+        estadiaMinima: "De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo)",
         mascotas: "No se admiten",
         fumar: "No se fuma adentro",
         fiestas: "No se permiten fiestas ni eventos",
@@ -204,64 +222,19 @@ window.CARPE_DIEM = {
       etiquetasFotos: ["Living", "Dormitorio", "Cocina", "Baño", "Pileta del edificio", "Frente"],
       reservas: {
         airbnb: "https://www.airbnb.com.ar/",
-        booking: "https://www.booking.com/",
+        // booking: "https://www.booking.com/",   // se activa cuando Booking apruebe las publicaciones
       },
     },
 
     {
+      // Todavía no se alquila: en el sitio aparece solo como una tarjeta,
+      // sin ficha, sin datos y sin links de reserva. Cuando esté listo,
+      // se le borra la línea  estado  y se completan los datos como los demás.
       id: "mares2-dorado",
-      nombre: "Edificio Mares 2 - Próximamente",
-      tipo: "Departamento 3 ambientes con pileta",
-      zona: "Pinamar Centro",
-      direccion: "Dirección a confirmar, Pinamar",
-      mapa: null, // faltan las coordenadas del edificio
-      frase: "Cerca del centro, con pileta en el edificio.",
-      descripcion: [
-        "Un tres ambientes a dos cuadras de la Avenida Bunge, en un edificio con pileta y solárium. Tiene la comodidad del centro, con cafés, restaurantes y paseo, y la playa a cinco cuadras.",
-        "Es una buena opción también fuera de temporada: tiene calefacción, buena conexión a internet y un escritorio para trabajar unos días desde la costa.",
-      ],
-      datos: {
-        huespedes: 4,
-        ambientes: 3,
-        dormitorios: 1,
-        camas: "1 matrimonial + 2 individuales",
-        banos: 2,
-        superficie: 42,
-        piso: "1.º por escalera",
-        distanciaPlaya: "5 cuadras",
-      },
-      distribucion: [
-        { espacio: "Dormitorio", detalle: "Cama matrimonial, placard amplio, caja fuerte" },
-        { espacio: "Living comedor", detalle: "Sofá cama, mesa para 4, Smart TV" },
-        { espacio: "Cocina", detalle: "Tipo americana, equipada completa" },
-        { espacio: "Baño", detalle: "Completo, con bañera" },
-      ],
-      comodidades: {
-        "Descanso": ["Aire acondicionado frío/calor", "Cuna a pedido"],
-        "Cocina": ["Anafe y horno eléctrico", "Microondas", "Heladera con freezer", "Tostadora y pava eléctrica"],
-        "Conexión": ["Wi-Fi 300 Mb por fibra", "Smart TV"],
-        "Edificio": ["Pileta descubierta", "Ascensor", "Cochera cubierta privada"],
-        "Playa": ["Sombrilla", "2 reposeras"],
-      },
-      normas: {
-        checkin: "Desde las 16:00",
-        checkout: "Hasta las 11:00",
-        estadiaMinima: "7 noches",
-        mascotas: "No se admiten",
-        fumar: "No se fuma adentro",
-        fiestas: "No se permiten fiestas ni eventos",
-      },
-      cerca: [
-        { lugar: "Av. Bunge", distancia: "2 cuadras" },
-        { lugar: "Playa", distancia: "5 cuadras" },
-        { lugar: "Supermercado", distancia: "1 cuadra" },
-        { lugar: "Reserva de médanos", distancia: "10 min en auto" },
-      ],
-      etiquetasFotos: ["Living", "Dormitorio", "Cocina", "Baño", "Pileta del edificio", "Frente"],
-      reservas: {
-        airbnb: "https://www.airbnb.com.ar/",
-        booking: "https://www.booking.com/",
-      },
+      estado: "proximamente",
+      nombre: "Edificio Mares 2",
+      // La foto del render va en img/propiedades/mares2-dorado/1.jpg
+      etiquetasFotos: ["Render"],
     },
   ],
 

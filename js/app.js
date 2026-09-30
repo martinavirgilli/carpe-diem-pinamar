@@ -137,7 +137,31 @@
 
   /* ---------------- inicio ---------------- */
 
+  const esProximamente = (p) => p.estado === "proximamente";
+
+  function tarjetaProximamente(p) {
+    const caja = document.createElement("div");
+    caja.className = "depto depto--proximamente";
+    caja.innerHTML = `
+      <div class="depto__img"></div>
+      <div class="depto__cuerpo">
+        <span class="depto__zona">Próximamente</span>
+        <h3 class="depto__nombre">${esc(p.nombre)}</h3>
+        ${p.frase ? `<p class="depto__frase">${esc(p.frase)}</p>` : ""}
+      </div>`;
+    const hueco = $(".depto__img", caja);
+    const etiqueta = (p.etiquetasFotos || [])[0] || "Próximamente";
+    hueco.appendChild(espacioFoto(null, etiqueta, p.nombre, false));
+    primeraFoto(p.id).then((foto) => {
+      if (!foto) return;
+      hueco.querySelector(".foto")?.remove();
+      hueco.appendChild(espacioFoto(foto, etiqueta, `${p.nombre}, próximamente`, false, true));
+    });
+    return caja;
+  }
+
   function tarjeta(p) {
+    if (esProximamente(p)) return tarjetaProximamente(p);
     const a = document.createElement("a");
     a.className = "depto";
     a.href = `#/${p.id}`;
@@ -178,7 +202,8 @@
       fig.appendChild(espacioFoto(fig.dataset.foto, fig.dataset.etiqueta, fig.dataset.alt, true, true));
     });
 
-    $("#lista-resenas").innerHTML = (D.resenas || []).map((r) => `
+    const listaResenas = $("#lista-resenas");     // la sección puede estar comentada
+    if (listaResenas) listaResenas.innerHTML = (D.resenas || []).map((r) => `
       <figure class="resena">
         <blockquote>“${esc(r.texto)}”</blockquote>
         <figcaption>
@@ -328,7 +353,7 @@
 
     // otros
     const otros = $("#otros");
-    D.propiedades.filter((x) => x.id !== p.id).forEach((x) => otros.appendChild(tarjeta(x)));
+    D.propiedades.filter((x) => x.id !== p.id && !esProximamente(x)).forEach((x) => otros.appendChild(tarjeta(x)));
 
     new Calendario($("#calendario"), p, actualizarReserva(p));
 
@@ -390,7 +415,12 @@
         noches.textContent = `${n} noche${n > 1 ? "s" : ""} · hasta ${p.datos.huespedes} huéspedes`;
         wa.href = linkWhatsapp(`${D.contacto.mensajeWhatsapp} el ${p.nombre}, del ${fechaMensaje(inicio)} al ${fechaMensaje(fin)} (${n} noche${n > 1 ? "s" : ""}). ¿Está disponible?`);
       } else {
-        noches.textContent = inicio ? "Ahora elegí el día de salida" : `Hasta ${p.datos.huespedes} huéspedes · mínimo ${p.normas?.estadiaMinima || ""}`;
+        const regla = inicio ? reglaDe(inicio) : null;
+        const pista = !regla ? "Ahora elegí el día de salida"
+          : regla.nochesExactas ? `Elegí la salida: ${regla.nochesExactas.join(" o ")} noches`
+          : regla.multiploNoches ? "Elegí la salida: cualquier sábado, desde 7 noches"
+          : `Elegí la salida: mínimo ${regla.minimoNoches} noches`;
+        noches.textContent = inicio ? pista : `Hasta ${p.datos.huespedes} huéspedes · ${p.normas?.estadiaMinima || ""}`;
         wa.href = linkWhatsapp(`${D.contacto.mensajeWhatsapp} el ${p.nombre}.`);
       }
     };
@@ -407,6 +437,12 @@
   const desdeClave = (s) => { const [y, m, d] = s.slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
   const sumarDias = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 
+  const REGLAS = (D.calendario && D.calendario.reglas) || [];
+  const reglaDe = (dia) => REGLAS.find((r) => r.meses.includes(dia.getMonth() + 1)) || null;
+  const minimoDe = (regla) =>
+    !regla ? 1 : regla.minimoNoches || Math.min(...(regla.nochesExactas || [1]));
+  const DIAS_SEMANA = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+
   class Calendario {
     constructor(raiz, prop, alCambiar) {
       this.raiz = raiz;
@@ -421,7 +457,7 @@
       this.fin = null;
       this.raiz.innerHTML = `
         <div class="cal__barra">
-          <p class="cal__estado" data-tipo="cargando">Cargando disponibilidad…</p>
+          <p class="cal__estado" data-tipo="reglas">${esc(REGLAS.map((r) => r.texto).filter(Boolean).join(" · "))}</p>
           <div class="cal__nav">
             <button type="button" data-mov="-1" aria-label="Mes anterior">‹</button>
             <button type="button" data-mov="1" aria-label="Mes siguiente">›</button>
@@ -440,31 +476,40 @@
       this.cargar();
     }
 
+    // La copia guardada se pide como script (y no con fetch) para que también
+    // funcione al abrir el index.html desde la computadora, donde el navegador
+    // no deja leer archivos sueltos.
+    cargarInstantanea(id) {
+      const guardado = (window.CARPE_DIEM_OCUPADOS || {})[id];
+      if (guardado) return Promise.resolve(guardado);
+      return new Promise((listo) => {
+        const tag = document.createElement("script");
+        tag.src = `ical/ocupados-${id}.js?v=${Date.now()}`;
+        tag.onload = () => listo((window.CARPE_DIEM_OCUPADOS || {})[id] || null);
+        tag.onerror = () => listo(null);
+        document.head.appendChild(tag);
+      });
+    }
+
     async cargar() {
       const estado = $(".cal__estado", this.raiz);
       const id = encodeURIComponent(this.prop.id);
       // 1) el calendario en vivo del hosting; 2) la copia guardada; 3) fechas de ejemplo
       const v = Date.now();                    // evita que el navegador muestre una copia vieja
       const fuentes = [
-        `${D.calendario.endpoint}?id=${id}&v=${v}`,
-        `ical/ocupados-${id}.json?v=${v}`,
+        () => fetch(`${D.calendario.endpoint}?id=${id}&v=${v}`, { cache: "no-store" }).then((r) => {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        }),
+        () => this.cargarInstantanea(this.prop.id),
       ];
-      for (const url of fuentes) {
+      for (const pedir of fuentes) {
         try {
-          const res = await fetch(url, { cache: "no-store" });
-          if (!res.ok) throw new Error(res.status);
-          const datos = await res.json();
-          if (!datos.configurado) throw new Error("sin configurar");
+          const datos = await pedir();
+          if (!datos || !datos.configurado) throw new Error("sin configurar");
           this.marcar(datos.ocupados || []);
-          const cuando = datos.actualizado
-            ? new Date(datos.actualizado).toLocaleString("es-AR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
-            : "";
-          estado.dataset.tipo = "ok";
-          estado.textContent = datos.instantanea
-            ? `Fechas al ${cuando} · se confirman por WhatsApp`
-            : `Sincronizado con ${(datos.fuentes || ["el calendario"]).join(" y ")}${cuando ? " · " + cuando : ""}`;
           this.pintar();
-          return;
+          return;                       // con datos reales, el cartel queda explicando las reglas
         } catch (err) { /* probamos la fuente siguiente */ }
       }
       this.marcar(this.ejemplo());
@@ -499,23 +544,65 @@
       return true;
     }
 
+    // ¿Se puede empezar una estadía ese día? (día de la semana correcto y noches libres)
+    puedeSerLlegada(dia) {
+      if (dia < this.hoy || this.ocupados.has(clave(dia))) return false;
+      const regla = reglaDe(dia);
+      if (regla && regla.diaLlegada !== undefined && dia.getDay() !== regla.diaLlegada) return false;
+      return this.nochesLibres(dia, sumarDias(dia, minimoDe(regla)));
+    }
+
+    // La regla la marca el mes de llegada, aunque la estadía termine en el mes siguiente.
+    esSalidaValida(inicio, dia) {
+      if (dia <= inicio || !this.nochesLibres(inicio, dia)) return false;
+      const noches = Math.round((dia - inicio) / 864e5);
+      const regla = reglaDe(inicio);
+      if (!regla) return true;
+      if (regla.nochesExactas) return regla.nochesExactas.includes(noches);
+      if (noches < (regla.minimoNoches || 1)) return false;
+      if (regla.multiploNoches) return noches % regla.multiploNoches === 0;   // semanas completas
+      return true;
+    }
+
+    porQueNoLlegada(dia) {
+      if (this.ocupados.has(clave(dia))) return "Esa noche ya está ocupada. Elegí otra fecha de llegada.";
+      const regla = reglaDe(dia);
+      if (regla && regla.diaLlegada !== undefined && dia.getDay() !== regla.diaLlegada) {
+        return regla.avisoLlegada || `En esas fechas la llegada es siempre un ${DIAS_SEMANA[regla.diaLlegada]}.`;
+      }
+      return `No quedan ${minimoDe(regla)} noches libres a partir de esa fecha.`;
+    }
+
+    porQueNoSalida(inicio, dia) {
+      if (!this.nochesLibres(inicio, dia)) return "Hay noches ocupadas en ese rango. Probá con otra fecha de salida.";
+      const regla = reglaDe(inicio);
+      if (!regla) return "Elegí una fecha de salida posterior a la de llegada.";
+      const noches = Math.round((dia - inicio) / 864e5);
+      if (noches < minimoDe(regla)) return `La estadía mínima en esas fechas es de ${minimoDe(regla)} noches.`;
+      if (regla.nochesExactas) return regla.avisoSalida || `Se alquila por ${regla.nochesExactas.join(" o ")} noches.`;
+      if (regla.multiploNoches) return regla.avisoSalida || "Se alquila por semanas completas.";
+      return `La estadía mínima en esas fechas es de ${minimoDe(regla)} noches.`;
+    }
+
     elegir(dia) {
       const aviso = $(".cal__aviso", this.raiz);
       aviso.textContent = "";
       const igual = (a, b) => a && b && +a === +b;
-      if (this.ocupados.has(clave(dia))) {                            // noche ocupada: no se puede elegir
-        aviso.textContent = "Esa noche ya está ocupada. Elegí otra fecha de llegada.";
-        return;
-      }
       if (igual(dia, this.fin)) this.fin = null;                      // tocar la salida la desmarca
       else if (igual(dia, this.inicio)) { this.inicio = this.fin; this.fin = null; }  // y tocar la llegada, también
       else if (this.inicio && !this.fin && dia > this.inicio) {
-        if (!this.nochesLibres(this.inicio, dia)) {                   // hay noches ocupadas en el medio
-          aviso.textContent = "Hay noches ocupadas en ese rango. Probá con otra fecha de salida.";
+        if (!this.esSalidaValida(this.inicio, dia)) {                 // la llegada no se pierde
+          aviso.textContent = this.porQueNoSalida(this.inicio, dia);
           return;
         }
         this.fin = dia;
-      } else { this.inicio = dia; this.fin = null; }                  // cualquier otro caso: arranca de nuevo
+      } else {
+        if (!this.puedeSerLlegada(dia)) {
+          aviso.textContent = this.porQueNoLlegada(dia);
+          return;
+        }
+        this.inicio = dia; this.fin = null;
+      }
       this.pintar();
       this.alCambiar(this.inicio, this.fin);
     }
@@ -542,14 +629,21 @@
           const pasado = d < this.hoy;
           const ocupado = this.ocupados.has(c);
           const clases = ["cal__dia"];
+          const eligiendoSalida = this.inicio && !this.fin;
+          const sirve = pasado || ocupado ? false
+            : eligiendoSalida ? this.esSalidaValida(this.inicio, d) : this.puedeSerLlegada(d);
           if (pasado) clases.push("cal__dia--pasado");
           else if (ocupado) clases.push("cal__dia--ocupado");
-          else clases.push("cal__dia--libre");
+          else {
+            clases.push("cal__dia--libre");
+            if (!sirve && !(this.inicio && +d === +this.inicio)) clases.push("cal__dia--fuera");
+          }
           if (+d === +this.hoy) clases.push("cal__dia--hoy");
           if (this.inicio && +d === +this.inicio) clases.push("cal__dia--inicio");
           if (this.fin && +d === +this.fin) clases.push("cal__dia--fin");
           if (this.inicio && this.fin && d > this.inicio && d < this.fin) clases.push("cal__dia--rango");
-          const etiqueta = `${d.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })}: ${pasado ? "fecha pasada" : ocupado ? "ocupado" : "disponible"}`;
+          const estado = pasado ? "fecha pasada" : ocupado ? "ocupado" : sirve ? "disponible" : "no se puede elegir";
+          const etiqueta = `${d.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })}: ${estado}`;
           html += `<button type="button" class="${clases.join(" ")}" data-dia="${c}" aria-label="${etiqueta}"${pasado ? " disabled" : ""}>${n}</button>`;
         }
         html += `</div></div>`;
@@ -594,7 +688,7 @@
     const h = decodeURIComponent(location.hash || "");
     const inicio = $("#vista-inicio"), depto = $("#vista-depto");
     if (h.startsWith("#/")) {
-      const p = D.propiedades.find((x) => x.id === h.slice(2));
+      const p = D.propiedades.find((x) => x.id === h.slice(2) && !esProximamente(x));
       if (p) {
         inicio.hidden = true;
         depto.hidden = false;

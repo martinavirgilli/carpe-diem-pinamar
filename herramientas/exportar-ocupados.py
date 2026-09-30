@@ -69,15 +69,23 @@ for dep, links in fuentes_por_departamento().items():
             continue
         usadas.append(nombre)
         reservas += ocupados_de(ics)
-    destino = os.path.join(RAIZ, "ical", f"ocupados-{dep}.json")
-    with open(destino, "w", encoding="utf-8") as f:
-        json.dump({
-            "configurado": bool(usadas),
-            "instantanea": True,
-            "fuentes": usadas,
-            "actualizado": datetime.now().astimezone().isoformat(timespec="minutes"),
-            "ocupados": reservas,
-        }, f, ensure_ascii=False, indent=2)
+    datos = {
+        "configurado": bool(usadas),
+        "instantanea": True,
+        "fuentes": usadas,
+        "actualizado": datetime.now().astimezone().isoformat(timespec="minutes"),
+        "ocupados": reservas,
+    }
+    cuerpo = json.dumps(datos, ensure_ascii=False, indent=2)
+
+    # .json: lo lee el sitio publicado en un hosting
+    with open(os.path.join(RAIZ, "ical", f"ocupados-{dep}.json"), "w", encoding="utf-8") as f:
+        f.write(cuerpo)
+
+    # .js: lo lee el sitio abierto con doble clic, donde el navegador no deja leer archivos
+    with open(os.path.join(RAIZ, "ical", f"ocupados-{dep}.js"), "w", encoding="utf-8") as f:
+        f.write("window.CARPE_DIEM_OCUPADOS = window.CARPE_DIEM_OCUPADOS || {};\n"
+                + f'window.CARPE_DIEM_OCUPADOS["{dep}"] = {cuerpo};\n')
     total += 1
     print(f"  · {dep}: {len(reservas)} reserva(s) desde {', '.join(usadas) or 'ninguna fuente'}")
 

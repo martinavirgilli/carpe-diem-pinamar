@@ -175,7 +175,7 @@ strong { font-weight: 500; }
 .foto__ruta { font-size: .7rem; color: var(--tinta-suave); opacity: .8; word-break: break-all; }
 
 /* ---------- tarjetas de departamentos ---------- */
-.deptos { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: clamp(20px, 3vw, 36px); }
+.deptos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 36px); }
 @media (max-width: 960px) { .deptos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .deptos { grid-template-columns: 1fr; } }
 .depto { display: grid; grid-template-rows: auto 1fr; text-decoration: none; color: inherit; }
@@ -192,12 +192,24 @@ strong { font-weight: 500; }
 .depto__ver::after { content: "→"; transition: transform .25s; }
 .depto:hover .depto__ver::after { transform: translateX(4px); }
 
+/* departamento que todavía no se alquila: solo despierta la curiosidad */
+.depto--proximamente { cursor: default; }
+.depto--proximamente .depto__zona { color: var(--tinta-suave); }
+.depto--proximamente .depto__nombre { color: var(--tinta-suave); }
+.depto--proximamente .depto__img { opacity: .9; }
+
 .marca-ejemplo {
   display: inline-block; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase;
   color: var(--aviso); border: 1px dashed currentColor; padding: 1px 7px; border-radius: 20px; vertical-align: middle;
   font-family: var(--f-texto); font-weight: 400;
 }
-.depto__img .marca-ejemplo { position: absolute; top: 10px; left: 10px; background: var(--superficie); z-index: 1; }
+.depto__img /* departamento que todavía no se alquila: solo despierta la curiosidad */
+.depto--proximamente { cursor: default; }
+.depto--proximamente .depto__zona { color: var(--tinta-suave); }
+.depto--proximamente .depto__nombre { color: var(--tinta-suave); }
+.depto--proximamente .depto__img { opacity: .9; }
+
+.marca-ejemplo { position: absolute; top: 10px; left: 10px; background: var(--superficie); z-index: 1; }
 
 /* ---------- el lugar ---------- */
 .seccion--lugar { max-width: none; padding-inline: 0; }
@@ -380,6 +392,8 @@ strong { font-weight: 500; }
 .cal__nav button:disabled { opacity: .35; cursor: default; }
 .cal__estado { font-size: var(--t-s); color: var(--tinta-suave); display: flex; gap: 8px; align-items: center; }
 .cal__estado::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--pino); flex: none; }
+.cal__estado[data-tipo="reglas"] { max-width: 46ch; }
+.cal__estado[data-tipo="reglas"]::before { display: none; }
 .cal__estado[data-tipo="ejemplo"]::before, .cal__estado[data-tipo="error"]::before { background: var(--aviso); }
 .cal__meses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 4vw, 48px); }
 @media (max-width: 620px) { .cal__meses { grid-template-columns: 1fr; } .cal__mes:nth-child(2) { display: none; } }
@@ -399,6 +413,9 @@ strong { font-weight: 500; }
   background: repeating-linear-gradient(135deg, var(--ocupado-fondo) 0 4px, transparent 4px 8px);
 }
 .cal__dia--pasado { color: var(--ocupado-tinta); opacity: .5; cursor: default; }
+/* días libres que igual no se pueden elegir por las reglas de estadía */
+.cal__dia--fuera { color: var(--ocupado-tinta); background: none; border-color: transparent; }
+.cal__dia--fuera:hover { border-color: var(--linea); }
 .cal__dia--rango { background: var(--sel-fondo); border-color: var(--sel-fondo); }
 .cal__dia--inicio, .cal__dia--fin { background: var(--pino); border-color: var(--pino); color: var(--sobre-pino); font-weight: 500; }
 .cal__dia--hoy { box-shadow: inset 0 -2px 0 var(--mar); }

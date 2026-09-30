@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-29",
+  "generado": "2026-09-30",
   "fuente": "js/datos.js del sitio carpediempinamar",
   "negocio": {
     "nombre": "Carpe Diem Pinamar",
@@ -9,18 +9,38 @@
     "whatsapp": "5492254607187",
     "whatsapp_link": "https://wa.me/5492254607187",
     "email": "carpediempinamar@gmail.com",
-    "instagram": "https://www.instagram.com/carpediem.pinamar/",
-    "tiktok": "https://www.tiktok.com/@carpediem.pinamar",
+    "instagram": "https://www.instagram.com/carpediem.alquilerespinamar/",
+    "tiktok": "https://www.tiktok.com/@carpe.diem.alquil",
     "datos_provisorios": false
+  },
+  "reglas_de_estadia": {
+    "explicacion": "La regla la marca el mes de llegada. Fuera de esas condiciones no se alquila.",
+    "por_mes": [
+      {
+        "meses": [
+          12,
+          1,
+          2,
+          3
+        ],
+        "dia_de_llegada": "sábado",
+        "noches_exactas": null,
+        "minimo_noches": 7,
+        "noches_en_multiplos_de": 7,
+        "resumen": "De diciembre a marzo se alquila por semanas completas, de sábado a sábado."
+      }
+    ]
   },
   "guia_de_respuesta": [
     "Responder en español rioplatense, de vos, cordial y breve.",
     "Usar únicamente los datos de este archivo. Si algo no está, decir que se consulta y derivar a una persona.",
     "No hay precios en este archivo: ante una consulta de tarifas, pedir fechas y cantidad de huéspedes y derivar a WhatsApp.",
+    "Revisar siempre 'reglas_de_estadia' antes de ofrecer fechas: de diciembre a marzo se alquila por semanas completas, de sábado a sábado (7, 14, 21… noches). De abril a noviembre no hay restricción.",
+    "Si alguien pide un fin de semana entre diciembre y marzo, explicar que en esos meses se alquila por semana completa y ofrecer el sábado más cercano.",
     "Para saber si unas fechas están libres, consultar el endpoint de 'disponibilidad' del departamento. 'hasta' es el día de salida y esa noche no cuenta como ocupada.",
     "Si el endpoint responde configurado: false o falla, no afirmar disponibilidad: ofrecer confirmar por WhatsApp.",
     "Si un departamento tiene datos_provisorios: true, no confirmar esos detalles como definitivos.",
-    "Para cerrar, compartir el link de la ficha del departamento y el de Airbnb o Booking.",
+    "Para cerrar, compartir el link de la ficha del departamento y el de la plataforma que tenga cargada (hoy, Airbnb). Si una plataforma figura en null, no existe: no inventarla.",
     "No inventar fotos, reseñas, descuentos ni excepciones a las normas de la casa."
   ],
   "departamentos": [
@@ -147,15 +167,15 @@
       ],
       "normas": {
         "check_in": "Desde las 16:00",
-        "check_out": "Hasta las 11:00",
-        "estadia_minima": "7 noches",
+        "check_out": "Hasta las 10:00",
+        "estadia_minima": "De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo)",
         "mascotas": "No se admiten",
         "fumar": "Prohibido fumar dentro de la unidad",
         "fiestas": "No se permiten fiestas ni eventos"
       },
       "reservas": {
         "airbnb": "https://www.airbnb.com.ar/rooms/837759040884961194?guests=1&adults=1&s=67&unique_share_id=2afef204-95a9-43f7-b5fd-b47c9891bb79",
-        "booking": "https://www.booking.com/"
+        "booking": null
       },
       "disponibilidad": {
         "endpoint": "https://www.carpediempinamar.com.ar/ical/calendario.php?id=liptus-merluza",
@@ -190,7 +210,7 @@
         "pinamar centro",
         "sin mascotas"
       ],
-      "resumen": "Edificio Liptus (Departamento 3 ambientes), en Pinamar Centro. Planta baja con patio y parrilla, entre los pinos. Capacidad: hasta 4 huéspedes, 2 dormitorio(s), 2 baño(s), 3 ambientes, 60 m², PLanta baja. Camas: 1 matrimonial + 2 individuales. Distancia a la playa: 10 cuadras. Un tres ambientes luminoso en planta baja, con patio y parrilla. Está a pocas cuadras de la Avenida Bunge y a unos minutos de la playa, así que podés hacer todo caminando: la playa a la mañana, el centro a la tarde. Está pensado para parejas o familias chicas que buscan descansar: habitaciones cómodas, cocina completa para no depender de salir a comer y un living que se abre al patio para las tardes largas y las noches de asado. Incluye: Aire acondicionado frío/calor, Calefacción, Cortinas blackout, Cuna a pedido, Anafe eléctrico y horno, Microondas, Heladera con freezer, Cafetera y pava eléctrica, Vajilla completa, Utensilios de cocina, Wi-Fi 600 Mb, Smart TV, Ascensor, Cochera cubierta privada, Lavadero común, Pileta. Normas: entrada Desde las 16:00; salida Hasta las 11:00; estadía mínima 7 noches; mascotas: No se admiten; Prohibido fumar dentro de la unidad; No se permiten fiestas ni eventos. Cerca: Playa a 10 cuadras; Av. Bunge a 1.5 kilometros; Supermercado a 7 cuadras; Terminal de micros a 7 min en auto."
+      "resumen": "Edificio Liptus (Departamento 3 ambientes), en Pinamar Centro. Planta baja con patio y parrilla, entre los pinos. Capacidad: hasta 4 huéspedes, 2 dormitorio(s), 2 baño(s), 3 ambientes, 60 m², PLanta baja. Camas: 1 matrimonial + 2 individuales. Distancia a la playa: 10 cuadras. Un tres ambientes luminoso en planta baja, con patio y parrilla. Está a pocas cuadras de la Avenida Bunge y a unos minutos de la playa, así que podés hacer todo caminando: la playa a la mañana, el centro a la tarde. Está pensado para parejas o familias chicas que buscan descansar: habitaciones cómodas, cocina completa para no depender de salir a comer y un living que se abre al patio para las tardes largas y las noches de asado. Incluye: Aire acondicionado frío/calor, Calefacción, Cortinas blackout, Cuna a pedido, Anafe eléctrico y horno, Microondas, Heladera con freezer, Cafetera y pava eléctrica, Vajilla completa, Utensilios de cocina, Wi-Fi 600 Mb, Smart TV, Ascensor, Cochera cubierta privada, Lavadero común, Pileta. Normas: entrada Desde las 16:00; salida Hasta las 10:00; estadía mínima De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo); mascotas: No se admiten; Prohibido fumar dentro de la unidad; No se permiten fiestas ni eventos. Cerca: Playa a 10 cuadras; Av. Bunge a 1.5 kilometros; Supermercado a 7 cuadras; Terminal de micros a 7 min en auto."
     },
     {
       "id": "mares-besugo",
@@ -301,15 +321,15 @@
       ],
       "normas": {
         "check_in": "Desde las 16:00",
-        "check_out": "Hasta las 11:00",
-        "estadia_minima": "7 noches",
+        "check_out": "Hasta las 10:00",
+        "estadia_minima": "De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo)",
         "mascotas": "No se admiten",
         "fumar": "Prohibido fumar dentro de la unidad",
         "fiestas": "No se permiten fiestas ni eventos"
       },
       "reservas": {
         "airbnb": "https://www.airbnb.com.ar/rooms/1088037256147290223?guests=1&adults=1&s=67&unique_share_id=4638a735-2f1f-4537-8277-9330dffc706a",
-        "booking": "https://www.booking.com/"
+        "booking": null
       },
       "disponibilidad": {
         "endpoint": "https://www.carpediempinamar.com.ar/ical/calendario.php?id=mares-besugo",
@@ -342,7 +362,7 @@
         "pinamar centro",
         "sin mascotas"
       ],
-      "resumen": "Edificio Mares (Departamento 2 ambientes con balcón), en Pinamar Centro. Tercer piso con balcón y parrilla, entre los pinos. Capacidad: hasta 4 huéspedes, 1 dormitorio(s), 2 baño(s), 2 ambientes, 50 m², Tercer piso con ascensor. Camas: 1 matrimonial + 1 sofá cama. Distancia a la playa: 10 cuadras. Un dos ambientes en un tercer piso, con balcón y parrilla, en una de las zonas más tranquilas ya accesibles de Pinamar. Te despertás con los pájaros y a unas cuadras llegás a una playa ancha y tranquila o al centro de Pinamar. Es ideal para familias: un dormitorios, dos baños, uno en suite y un toillete, un sofa cama en el living comedor y un balcón con parrilla con vista a los pinos. Con estacionamiento privado en el edificio. Incluye: Aire acondicionado frío/calor, Cuna a pedido, Horno y anafe eléctrico, Lavarropas, Microondas, Cafetera, Vajilla para 4, Utensilios de cocina, Wi-Fi 600 Mb, Smart TV en el living y en el dormitorio, Balcón propio, Parrilla, Tender, Cochera cubierta, Ascensor, Pileta. Normas: entrada Desde las 16:00; salida Hasta las 11:00; estadía mínima 7 noches; mascotas: No se admiten; Prohibido fumar dentro de la unidad; No se permiten fiestas ni eventos. Cerca: Playa a 10 cuadras; Av. Bunge a 20 min caminando; Cariló a 15 min en auto."
+      "resumen": "Edificio Mares (Departamento 2 ambientes con balcón), en Pinamar Centro. Tercer piso con balcón y parrilla, entre los pinos. Capacidad: hasta 4 huéspedes, 1 dormitorio(s), 2 baño(s), 2 ambientes, 50 m², Tercer piso con ascensor. Camas: 1 matrimonial + 1 sofá cama. Distancia a la playa: 10 cuadras. Un dos ambientes en un tercer piso, con balcón y parrilla, en una de las zonas más tranquilas ya accesibles de Pinamar. Te despertás con los pájaros y a unas cuadras llegás a una playa ancha y tranquila o al centro de Pinamar. Es ideal para familias: un dormitorios, dos baños, uno en suite y un toillete, un sofa cama en el living comedor y un balcón con parrilla con vista a los pinos. Con estacionamiento privado en el edificio. Incluye: Aire acondicionado frío/calor, Cuna a pedido, Horno y anafe eléctrico, Lavarropas, Microondas, Cafetera, Vajilla para 4, Utensilios de cocina, Wi-Fi 600 Mb, Smart TV en el living y en el dormitorio, Balcón propio, Parrilla, Tender, Cochera cubierta, Ascensor, Pileta. Normas: entrada Desde las 16:00; salida Hasta las 10:00; estadía mínima De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo); mascotas: No se admiten; Prohibido fumar dentro de la unidad; No se permiten fiestas ni eventos. Cerca: Playa a 10 cuadras; Av. Bunge a 20 min caminando; Cariló a 15 min en auto."
     },
     {
       "id": "liptus2-cornalito",
@@ -441,15 +461,15 @@
       ],
       "normas": {
         "check_in": "Desde las 16:00",
-        "check_out": "Hasta las 11:00",
-        "estadia_minima": "7 noches",
+        "check_out": "Hasta las 10:00",
+        "estadia_minima": "De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo)",
         "mascotas": "No se admiten",
         "fumar": "No se fuma adentro",
         "fiestas": "No se permiten fiestas ni eventos"
       },
       "reservas": {
         "airbnb": "https://www.airbnb.com.ar/",
-        "booking": "https://www.booking.com/"
+        "booking": null
       },
       "disponibilidad": {
         "endpoint": "https://www.carpediempinamar.com.ar/ical/calendario.php?id=liptus2-cornalito",
@@ -477,7 +497,7 @@
         "pinamar centro",
         "sin mascotas"
       ],
-      "resumen": "Edificio Liptus 2 (Departamento 2 ambientes con pileta), en Pinamar Centro. Cerca del centro, con pileta en el edificio. Capacidad: hasta 4 huéspedes, 1 dormitorio(s), 1 baño(s), 2 ambientes, 42 m², Tercer piso con ascensor. Camas: 1 matrimonial + 1 sofá cama. Distancia a la playa: 10 cuadras. Un dos ambientes a dos cuadras de la Avenida Bunge, en un edificio con pileta. Tiene la comodidad del centro, con cafés, restaurantes y paseo, y la playa a cinco cuadras. Es una buena opción también fuera de temporada: tiene calefacción, buena conexión a internet y la tranquilidad de un entorno natural. Incluye: Aire acondicionado frío/calor, Cuna a pedido, Anafe y horno eléctrico, Microondas, Heladera con freezer, Tostadora y pava eléctrica, Wi-Fi 300 Mb por fibra, Smart TV, Pileta descubierta, Ascensor, Cochera cubierta privada. Normas: entrada Desde las 16:00; salida Hasta las 11:00; estadía mínima 7 noches; mascotas: No se admiten; No se fuma adentro; No se permiten fiestas ni eventos. Cerca: Av. Bunge a 2 cuadras; Playa a 5 cuadras; Supermercado a 1 cuadra; Reserva de médanos a 10 min en auto."
+      "resumen": "Edificio Liptus 2 (Departamento 2 ambientes con pileta), en Pinamar Centro. Cerca del centro, con pileta en el edificio. Capacidad: hasta 4 huéspedes, 1 dormitorio(s), 1 baño(s), 2 ambientes, 42 m², Tercer piso con ascensor. Camas: 1 matrimonial + 1 sofá cama. Distancia a la playa: 10 cuadras. Un dos ambientes a dos cuadras de la Avenida Bunge, en un edificio con pileta. Tiene la comodidad del centro, con cafés, restaurantes y paseo, y la playa a cinco cuadras. Es una buena opción también fuera de temporada: tiene calefacción, buena conexión a internet y la tranquilidad de un entorno natural. Incluye: Aire acondicionado frío/calor, Cuna a pedido, Anafe y horno eléctrico, Microondas, Heladera con freezer, Tostadora y pava eléctrica, Wi-Fi 300 Mb por fibra, Smart TV, Pileta descubierta, Ascensor, Cochera cubierta privada. Normas: entrada Desde las 16:00; salida Hasta las 10:00; estadía mínima De diciembre a marzo, semanas completas de sábado a sábado (7 noches como mínimo); mascotas: No se admiten; No se fuma adentro; No se permiten fiestas ni eventos. Cerca: Av. Bunge a 2 cuadras; Playa a 5 cuadras; Supermercado a 1 cuadra; Reserva de médanos a 10 min en auto."
     }
   ]
 }

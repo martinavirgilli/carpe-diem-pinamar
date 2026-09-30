@@ -1,4 +1,5 @@
-{
+window.CARPE_DIEM_OCUPADOS = window.CARPE_DIEM_OCUPADOS || {};
+window.CARPE_DIEM_OCUPADOS["liptus-merluza"] = {
   "configurado": true,
   "instantanea": true,
   "fuentes": [
@@ -8,7 +9,7 @@
   "ocupados": [
     {
       "desde": "2027-01-16",
-      "hasta": "2027-01-23"
+      "hasta": "2027-02-01"
     }
   ]
-}
+};

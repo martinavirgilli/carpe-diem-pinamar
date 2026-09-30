@@ -25,6 +25,10 @@ la reserva.
 - **Calendario de disponibilidad real:** las fechas ocupadas salen de los calendarios
   iCal de Google, Airbnb o Booking. El visitante elige llegada y salida sobre el
   calendario y no puede armar un rango que pise noches ocupadas.
+- **Reglas de estadía por temporada:** de diciembre a marzo solo se alquila por semanas
+  completas, de sábado a sábado, encadenando las que haga falta; el resto del año, sin
+  restricción. El calendario apaga los días que no se pueden elegir y explica por qué.
+  Las reglas son configuración, no código.
 - **WhatsApp con contexto:** el botón abre el chat con el mensaje ya escrito, con el
   edificio, las fechas y la cantidad de noches.
 - **Ubicación aproximada:** mapa centrado en la zona, con un círculo de 300 metros, como
@@ -54,9 +58,13 @@ medio. El sitio prueba tres fuentes, en orden:
 
 ```
 1. /ical/calendario.php?id=<departamento>   → en vivo (PHP o función de Netlify)
-2. /ical/ocupados-<departamento>.json       → copia guardada, generada por un script
+2. /ical/ocupados-<departamento>.js         → copia guardada, generada por un script
 3. fechas de ejemplo                        → si no hay nada configurado, y lo aclara en pantalla
 ```
+
+La copia se carga como `<script>` y no con `fetch`, para que el calendario también
+muestre fechas reales al abrir el `index.html` desde el disco, donde el navegador
+bloquea la lectura de archivos.
 
 Las dos primeras responden lo mismo, así que el front-end no sabe ni le importa dónde
 está publicado el sitio:
