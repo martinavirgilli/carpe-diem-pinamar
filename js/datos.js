@@ -81,7 +81,7 @@ window.CARPE_DIEM = {
         { espacio: "Dormitorio en suite", detalle: "Cama matrimonial, placard, ventana al patio, caja fuerte" },
         { espacio: "Dormitorio 2", detalle: "Dos camas individuales, ventana al patio" },
         { espacio: "Living comedor", detalle: "Sofá de 2 plazas, mesa para 4, Smart TV" },
-        { espacio: "Cocina", detalle: "Equipacion completa, horno, heladera, microondas y otros electrodomésticos" },
+        { espacio: "Cocina", detalle: "Equipación completa, horno, heladera, microondas y otros electrodomésticos" },
         { espacio: "Patio", detalle: "Parrilla, mesa y 4 sillas" },
         { espacio: "Baño en suite", detalle: "Completo, con ducha, dentro de la habitación principal" },
         { espacio: "Baño", detalle: "Completo, con ducha" },
@@ -121,7 +121,7 @@ window.CARPE_DIEM = {
       tipo: "Departamento 2 ambientes con balcón",
       zona: "Pinamar Centro",
       direccion: "Del Besugo 1350, Pinamar",
-      mapa: null, // faltan las coordenadas del edificio
+      mapa: { lat: -37.1043375, lng: -56.860429 },
       frase: "Tercer piso con balcón, parrilla y cochera cubierta.",
       descripcion: [
         "Un dos ambientes en un tercer piso, con balcón y parrilla, en una de las zonas más tranquilas ya accesibles de Pinamar. Te despertás con los pájaros y a unas cuadras llegás a una playa ancha y tranquila o al centro de Pinamar.",
@@ -221,7 +221,7 @@ window.CARPE_DIEM = {
       ],
       etiquetasFotos: ["Living", "Dormitorio", "Cocina", "Baño", "Pileta del edificio", "Frente"],
       reservas: {
-        airbnb: "https://www.airbnb.com.ar/",
+        airbnb: "https://www.airbnb.com.ar/rooms/1782958064403058557?guests=1&adults=1&s=67&unique_share_id=b61aebd0-2f20-4fd4-b0c5-c27fd753f83a",
         // booking: "https://www.booking.com/",   // se activa cuando Booking apruebe las publicaciones
       },
     },
