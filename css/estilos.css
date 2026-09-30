@@ -277,7 +277,8 @@ strong { font-weight: 500; }
 
 /* ---------- WhatsApp flotante ---------- */
 .wa-flotante {
-  position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  /* 78px: deja pasar la insignia de Netlify, que va abajo a la derecha */
+  position: fixed; right: 16px; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); z-index: 30;
   width: 54px; height: 54px; border-radius: 50%;
   display: grid; place-items: center;
   background: var(--boton-fondo); color: var(--boton-tinta);
